@@ -253,7 +253,7 @@ let g:airline#extensions#tabline#enabled = 1
 
 
 "" settings for YCM
-let g:ycm_global_ycm_extra_conf = '/home/yumiaohust/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '/home/yumiaohust/.vim/.ycm_extra_conf.py'
 let g:ycm_python_binary_path = 'python'
 
 
