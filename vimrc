@@ -39,7 +39,6 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 "" vim-signature
 Plugin 'kshenoy/vim-signature'
 
-
 Plugin 'vim-scripts/Conque-GDB'
 
 Plugin 'tpope/vim-fugitive'
@@ -48,6 +47,14 @@ Plugin 'mhinz/vim-startify'
 
 Plugin 'christoomey/vim-tmux-navigator'
 
+"" maximize or minimize the current split window through F3
+Plugin 'szw/vim-maximizer'
+
+"" Open a Quickfix item in a window you choose
+Plugin 'yssl/QFEnter'
+
+"" Vim plugin for super fast Cscope/GNU GLOBAL results navigation using quickfix window
+Plugin 'ronakg/quickr-cscope.vim'
 
 "" All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -304,6 +311,7 @@ set tags=tags;
 "set autochdir
 map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " cscope configure
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -324,6 +332,29 @@ if has("cscope")
 endif
 
 
+""cscope short cut map
+""add cscope.out
+"nmap<leader>sa:csadd cscope.out<CR>
+""find this C symbol
+"nmap <leader>zs:cs find s <C-R>=expand("<cword>")<CR><CR>
+"""find this definition
+"nmap <leader>zg:cs find g <C-R>=expand("<cword>")<CR><CR>
+"""find functions called by this function
+"nmap <leader>zd:cs find d <C-R>=expand("<cword>")<CR><CR>
+"""find functions calling this function
+"nmap <leader>zc:cs find c <C-R>=expand("<cword>")<CR><CR>
+"""find this text string
+"nmap <leader>zt:cs find t <C-R>=expand("<cword>")<CR><CR>
+"""find this egrep pattern
+"nmap <leader>ze:cs find e <C-R>=expand("<cword>")<CR><CR>
+"""find this file
+"nmap <leader>zf:cs find f <C-R>=expand("<cfile>")<CR><CR>
+"""find files #including this file
+"nmap <leader>zi:cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+"""find places where this symbol is assigned a value
+"nmap <leader>za:cs find a <C-R>=expand("<cword>")<CR><CR>
+
+
 "" Quickfix settings
 "" automatically open the location/quickfix window after :make, :grep, :lvimgrep and friends if there are valid locations/errors
 augroup vimrc
@@ -337,6 +368,7 @@ augroup END
 if has("autocmd")
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
 
 "" :make short cuts
 "" Save and make current file.o
@@ -372,6 +404,26 @@ let g:ConqueTerm_CloseOnEnd=1
 
 "" vim-fugitive
 autocmd QuickFixCmdPost *grep* cwindow
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" jumps
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! GotoJump()
+    jumps
+    let j = input("Please select your jump: ")
+    if j != ''
+        let pattern = '\v\c^\+'
+        if j =~ pattern
+            let j = substitute(j, pattern, '', 'g')
+            execute "normal " . j . "\<c-i>"
+        else
+            execute "normal " . j . "\<c-o>"
+        endif
+    endif
+endfunction
+
+nmap <Leader>j :call GotoJump()<CR>
+
 
 " gvim font settings
 if has("gui_running")
